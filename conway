@@ -31,7 +31,7 @@ function get {
   local c=$2
   c=$((c%width))
   local row="${cur[r%height]}"
-  echo "${row:$c:1}"
+  rval="${row:$c:1}"
 }
 
 
@@ -51,13 +51,15 @@ step() {
     for i in -1 0 1; do
     for j in -1 0 1; do
     [ $j -eq 0 ] && [ $i -eq 0 ] && continue
-    neighbor=${ get $((r + i)) $((c + j)); }
+    get $((r + i)) $((c + j))
+    neighbor=$rval
     if [[ $neighbor == "$ALIVE" ]]; then
       ((sum++))
     fi
     done
     done
-    self=${ get $r $c; }
+    get $r $c
+    self=$rval
     if [[ $self == "$ALIVE" ]]; then
       # we are live
       if [[ sum -lt 2 ]]; then
